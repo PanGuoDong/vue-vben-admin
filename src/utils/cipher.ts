@@ -1,13 +1,38 @@
-import { encrypt, decrypt } from 'crypto-js/aes';
-import UTF8, { parse } from 'crypto-js/enc-utf8';
-import pkcs7 from 'crypto-js/pad-pkcs7';
-import ECB from 'crypto-js/mode-ecb';
-import md5 from 'crypto-js/md5';
-import Base64 from 'crypto-js/enc-base64';
+import CryptoJS from 'crypto-js';
 
 export interface EncryptionParams {
   key: string;
   iv: string;
+}
+
+export class DesEncryption {
+  private key;
+  private iv;
+
+  constructor(opt: Partial<EncryptionParams> = {}) {
+    const { key } = opt;
+    if (key) {
+      const newKey = CryptoJS.MD5(key).toString().substring(0, 8);
+      this.key = CryptoJS.enc.Utf8.parse(newKey);
+      this.iv = CryptoJS.enc.Utf8.parse(newKey);
+    }
+  }
+
+  get getOptions() {
+    return {
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7,
+      iv: this.iv,
+    };
+  }
+
+  encrypt(cipherText: string) {
+    return CryptoJS.DES.encrypt(cipherText, this.key, this.getOptions).ciphertext.toString();
+  }
+
+  decrypt(cipherText: string) {
+    return CryptoJS.DES.decrypt(cipherText, this.key).toString(CryptoJS.enc.Utf8);
+  }
 }
 
 export class AesEncryption {
@@ -16,39 +41,36 @@ export class AesEncryption {
 
   constructor(opt: Partial<EncryptionParams> = {}) {
     const { key, iv } = opt;
-    if (key) {
-      this.key = parse(key);
-    }
-    if (iv) {
-      this.iv = parse(iv);
-    }
+    if (key) this.key = CryptoJS.enc.Utf8.parse(key);
+
+    if (iv) this.iv = CryptoJS.enc.Utf8.parse(iv);
   }
 
   get getOptions() {
     return {
-      mode: ECB,
-      padding: pkcs7,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7,
       iv: this.iv,
     };
   }
 
-  encryptByAES(cipherText: string) {
-    return encrypt(cipherText, this.key, this.getOptions).toString();
+  encrypt(cipherText: string) {
+    return CryptoJS.AES.encrypt(cipherText, this.key, this.getOptions).toString();
   }
 
-  decryptByAES(cipherText: string) {
-    return decrypt(cipherText, this.key, this.getOptions).toString(UTF8);
+  decrypt(cipherText: string) {
+    return CryptoJS.AES.decrypt(cipherText, this.key, this.getOptions).toString(CryptoJS.enc.Utf8);
   }
 }
 
 export function encryptByBase64(cipherText: string) {
-  return UTF8.parse(cipherText).toString(Base64);
+  return CryptoJS.enc.Utf8.parse(cipherText).toString(CryptoJS.enc.Base64);
 }
 
 export function decodeByBase64(cipherText: string) {
-  return Base64.parse(cipherText).toString(UTF8);
+  return CryptoJS.enc.Base64.parse(cipherText).toString(CryptoJS.enc.Utf8);
 }
 
 export function encryptByMd5(password: string) {
-  return md5(password).toString();
+  return CryptoJS.MD5(password).toString();
 }

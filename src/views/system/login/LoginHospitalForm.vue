@@ -17,12 +17,10 @@
 
   import * as authUtil from '@/utils/auth';
 
-  import type { HospitalDicVO } from '@/api/system/hospital';
-  import { getHospitalDics } from '@/api/system/hospital';
-  import type { DeptDicVO } from '@/api/system/dept';
-  import { getAllowLoginDeptDics } from '@/api/system/dept';
   import { LOGIN_FORM_KEY } from '@/enums/cacheEnum';
   import { createLocalStorage } from '@/utils/cache';
+  import { HospitalDicVO, getHospitalDics } from '/@/api/system/hospital';
+  import { DeptDicVO, getAllowLoginDeptDics } from '/@/api/system/dept';
 
   const ls = createLocalStorage();
 
@@ -153,12 +151,12 @@
         v-if="tenantEnable === 'true'"
         size="large"
         v-model:value="formData.tenantName"
-        :placeholder="t('sys.login.tenantName')"
+        :placeholder="t('system.login.tenantName')"
         class="fix-auto-fill"
       /> -->
       <Select
         v-model:value="formData.hospitalId"
-        :placeholder="t('sys.loginHospital.choseHopital')"
+        :placeholder="t('system.loginHospital.choseHopital')"
         :options="tenants"
         :field-names="{ label: 'hospitalName', value: 'hospitalId' }"
       />
@@ -166,7 +164,7 @@
     <FormItem name="deptId" class="enter-x">
       <Select
         v-model:value="formData.deptId"
-        :placeholder="t('sys.loginHospital.choseDept')"
+        :placeholder="t('system.loginHospital.choseDept')"
         :options="depts"
         :field-names="{ label: 'deptName', value: 'deptId' }"
       />

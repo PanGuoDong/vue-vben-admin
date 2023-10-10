@@ -147,6 +147,8 @@ export interface GlobConfig {
   urlPrefix?: string;
   // Project abbreviation
   shortName: string;
+  // 租户开关
+  tenantEnable: string;
 }
 export interface GlobEnvConfig {
   // Site title
@@ -157,4 +159,6 @@ export interface GlobEnvConfig {
   VITE_GLOB_API_URL_PREFIX?: string;
   // Upload url
   VITE_GLOB_UPLOAD_URL?: string;
+  // 租户开关
+  VITE_GLOB_APP_TENANT_ENABLE: string;
 }

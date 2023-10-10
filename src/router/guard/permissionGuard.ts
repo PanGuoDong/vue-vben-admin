@@ -29,7 +29,7 @@ export function createPermissionGuard(router: Router) {
       return;
     }
 
-    const token = userStore.getToken;
+    const token = userStore.getAccessToken;
 
     // Whitelist can be directly entered
     if (whitePathList.includes(to.path as PageEnum)) {
