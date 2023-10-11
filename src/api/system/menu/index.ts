@@ -14,6 +14,7 @@ export interface StandardMenuVO {
   visible: boolean;
   keepAlive: boolean;
   children: StandardMenuVO[] | undefined;
+  meta: object | undefined;
 }
 
 /**
@@ -40,6 +41,7 @@ export async function getMenuList() {
         visible: true,
         keepAlive: true,
         children: undefined,
+        meta: undefined,
       });
 
       const menuGroups = ref<StandardMenuVO[]>([]);
@@ -57,6 +59,7 @@ export async function getMenuList() {
             visible: true,
             keepAlive: true,
             children: undefined,
+            meta: undefined,
           });
 
           const groupMenus = ref<StandardMenuVO[]>([]);
@@ -74,6 +77,7 @@ export async function getMenuList() {
                 visible: true,
                 keepAlive: true,
                 children: undefined,
+                meta: undefined,
               });
               groupMenus.value?.push(menuRoute);
             });
